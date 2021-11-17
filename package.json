@@ -1,0 +1,22 @@
+{
+  "name": "ais_messages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BRADrocket72/AIS_Messages.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BRADrocket72/AIS_Messages/issues"
+  },
+  "homepage": "https://github.com/BRADrocket72/AIS_Messages#readme",
+  "dependencies": {
+    "mongodb": "^4.1.4"
+  }
+}
