@@ -1,9 +1,7 @@
-
-function DenmarkTraffic(){
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'AISTestData';
-(async function find(){
+(async function(){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
@@ -15,9 +13,6 @@ const dbName = 'AISTestData';
     }finally{
         client.close()
     }
-    
+
 })()
-//return a interface of fucntions {functionName: functionName,}
-return{find: find, };
-}
 

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/BRADrocket72/AIS_Messages#readme",
   "dependencies": {
+    "assert": "^2.0.0",
     "mongodb": "^4.1.4"
   }
 }
