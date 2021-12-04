@@ -1,18 +1,22 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'AISTestData';
-(async function(){
+
+
+module.exports.find = async() => { async function find(){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
         const vessels = client.db(dbName).collection('vessels');
         var docs =await vessels.findOne();
-        console.log(docs);
+        return docs;
     } catch (error) {
-        console.log(error)
+        return error
     }finally{
         client.close()
     }
 
-})()
+}
+return find()}
+
 

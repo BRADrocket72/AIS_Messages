@@ -1,9 +1,10 @@
-var assert = require('assert')
-var dao = require('src\data-access-object.js')
-function testInsertBatchIntoInterface1(batch){
-    //Function 'insert_message_batch' that takes an array of messages as input
-    var dao = DenmarkTraffic(true)
-    if(dao.isStub){
-        return batch.length;
-    }  
-}
+const assert = require('chai').assert;
+const dao = require('../src/data-access-object');
+
+
+describe('Test size of Batch',async function(){
+    it('', async function() {
+        console.log(await dao.find())
+			assert.lengthOf([await dao.find()],1)
+		})
+});

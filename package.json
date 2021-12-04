@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/BRADrocket72/AIS_Messages#readme",
   "dependencies": {
     "assert": "^2.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
     "mongodb": "^4.1.4"
   }
 }
