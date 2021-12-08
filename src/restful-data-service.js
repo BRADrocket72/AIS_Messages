@@ -1,10 +1,15 @@
-export function RestfulDataService(){
-    const dao = require('src\data-access-object.js');
+const dao = require('./data-access-object.js');
 
-    export async  function get(imo){
+  function RestfulDataService(){
+
+    async  function get(imo,filter){
         let res = await dao.find(imo).catch(err =>{
             return {'ok': 0, data: {Error:err.toString()}};
         })
         return res;
     }
+    return { GET: get };
+}
+module.exports = {
+    RestfulDataService
 }

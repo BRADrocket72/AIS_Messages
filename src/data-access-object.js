@@ -1,8 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'AISTestData';
-
+function denmarkTraffic(){
 var isStub = false;
+
 async function find(){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
@@ -17,9 +18,9 @@ async function find(){
     }
 
 }
-
-modules.exports = {
-    find
 }
 
+module.exports = {
+    denmarkTraffic
+}
 
