@@ -24,7 +24,31 @@ modules.exports = {
 
 
 
+module.exports.timestamp = async() => { async function find(){
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try {
+        await client.connect()
+        connection.open(function(err, connection) {
+            const vessels = client.db(dbName).collection('vessels');
+            database.collection(VESSEL_COLLECTION, {}, function(err, vessels) {
+            var now = new Date().getTime() / 1000 - 10 * 60;
+            var tenMinutesOld = new Date()
+            tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
+            var docs = await vessels.remove({timestamp: {$lt:tenMinutesOld}}, function(err, result) {
+                if(err != null)
+                    console.log('A refresh error occurred');
+                    connection.close();
+                });
+            });
+        });
+    }catch (error) {
+        return error
+    }finally{
+        client.close()
+    }
 
+}
+return timestamp()}
 
 
 //Function to get all data and print it 
