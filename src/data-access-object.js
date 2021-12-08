@@ -2,8 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'AISTestData';
 
-
-module.exports.find = async() => { async function find(){
+var isStub = false;
+async function find(){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
@@ -17,6 +17,9 @@ module.exports.find = async() => { async function find(){
     }
 
 }
-return find()}
+
+modules.exports = {
+    find
+}
 
 

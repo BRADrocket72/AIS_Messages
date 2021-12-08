@@ -1,11 +1,13 @@
 // use curl -X GET {URL} to test server
 const http = require('http')
+const restAPI = RestfulDataService()
 
 const requestListener = function (req, res) {
     res.setHeader("Content-Type", "application/json");
     switch(req.url){
-        case "/find":
-        res.end('hello World');
+        case "/get":
+        //Should I be using an instance of the DAO or RestAPI here?
+        restAPI.get("12122112");
         break;
         case defualt:
             res.end("defualted")

@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const dao = require('../src/data-access-object');
-
+dao.isStub
 
 describe('Find returns one object',async function(){
     it('', async function() {
