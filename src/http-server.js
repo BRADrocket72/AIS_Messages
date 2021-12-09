@@ -4,7 +4,6 @@ const RestfulDataService = require('./restful-data-service.js').RestfulDataServi
 
 function httpServer(){
 const requestListener = function (req, res) {
-    console.log("here 19")
     let url = new URL(req.url,'http://localhost:8000');
     
     res.setHeader("Content-Type", "application/json");
@@ -22,9 +21,8 @@ for (let [k,v] of url.searchParams){ filter[k]=v }
         let rslt;
     switch(req.method){
         case 'GET':
-        //Should I be using an instance of the DAO or RestAPI here?
         console.log("here")
-         rslt = await RestfulDataService['GET'](imo,filter);
+         rslt = await RestfulDataService['GET'](imo);
         break;
         case defualt:
             res.end("defaulted")

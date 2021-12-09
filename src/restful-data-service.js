@@ -1,9 +1,9 @@
-const dao = require('./data-access-object.js').denmarkTraffic;
+const denmarkTraffic = require('./data-access-object.js');
 
   function RestfulDataService(){
 
-    async  function get(imo,filter){
-        let res = await dao.find(imo).catch(err =>{
+    async  function get(imo){
+        let res = await denmarkTraffic.find(imo).catch(err =>{
             return {'ok': 0, data: {Error:err.toString()}};
         })
         return res;

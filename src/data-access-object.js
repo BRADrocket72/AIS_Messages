@@ -1,16 +1,16 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'AISTestData';
-function denmarkTraffic(){
+
 var isStub = false;
 
-async function find(){
+async function find(imo){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
         const vessels = client.db(dbName).collection('vessels');
-        var docs =await vessels.findOne();
-        return docs;
+        var docs =await vessels.findOne({IMO:imo});
+        console.log(docs);
     } catch (error) {
         return error
     }finally{
@@ -18,9 +18,6 @@ async function find(){
     }
 
 }
-}
-
-
 
 
  async function deleteOldMessages(){
@@ -75,13 +72,13 @@ async function run() {
     finally {
         await client.close();
     }
+    return {find, deleteOldMessages,run}
 }
-// call the run function
-run().catch(console.dir);
 
 module.exports = {
-    denmarkTraffic,
-    deleteOldMessages
+    find :find,
+
+    
 
 }
 
