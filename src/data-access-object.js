@@ -20,28 +20,21 @@ async function find(){
 }
 }
 
-module.exports = {
-    denmarkTraffic
-}
 
 
-module.exports.timestamp = async() => { async function find(){
+
+ async function deleteOldMessages(){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
-        connection.open(function(err, connection) {
-            const vessels = client.db(dbName).collection('vessels');
-            database.collection(VESSEL_COLLECTION, {}, function(err, vessels) {
-            var now = new Date().getTime() / 1000 - 10 * 60;
-            var tenMinutesOld = new Date()
-            tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
-            var docs = await vessels.remove({timestamp: {$lt:tenMinutesOld}}, function(err, result) {
-                if(err != null)
+            const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
+            var tenMinutesOld = new Date(Date.now()-1000 * 60*10);
+            var docs = await aisdk_20201118.deleteMany({timestamp: {$lt:tenMinutesOld}}, function(err, result) {
+                if(err) throw error;
                     console.log('A refresh error occurred');
-                    connection.close();
+                    console.log(obj.result.n + "documents deleted")
                 });
-            });
-        });
+            return docs;
     }catch (error) {
         return error
     }finally{
@@ -49,7 +42,6 @@ module.exports.timestamp = async() => { async function find(){
     }
 
 }
-return timestamp()}
 
 
 //Function to get all data and print it 
@@ -86,6 +78,12 @@ async function run() {
 }
 // call the run function
 run().catch(console.dir);
+
+module.exports = {
+    denmarkTraffic,
+    deleteOldMessages
+
+}
 
 
 

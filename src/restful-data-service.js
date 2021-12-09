@@ -1,4 +1,4 @@
-const dao = require('./data-access-object.js');
+const dao = require('./data-access-object.js').denmarkTraffic;
 
   function RestfulDataService(){
 
