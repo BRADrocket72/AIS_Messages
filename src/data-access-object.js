@@ -75,6 +75,24 @@ async function run() {
     return {find, deleteOldMessages,run}
 }
 
+
+// Priority 2 query that Read all ports matching the given name
+async function findMatchName(Name){
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try {
+        await client.connect()
+        const vessels = client.db(dbName).collection('vessels');
+        var docs = await vessels.find({Name: "$Name"}, {projection: {_id:0, IMO:1, Name:1, Built:1}}).toArray();
+        return docs
+       // console.log(docs);
+    } catch (error) {
+        return error
+    }finally{
+        client.close()
+    }
+
+}
+
 module.exports = {
     find :find,
 
