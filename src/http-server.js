@@ -15,18 +15,20 @@ for (let [k,v] of url.searchParams){ filter[k]=v }
         req.on('data', (chunk) =>{body += chunk;})
 
         let idFound = /[^/]+$/.exec( url.pathname );
-        let imo = idFound!=null? Number(idFound): null;
-        console.log("here 19")
+        let imo = idFound!=null? String(idFound): "all";
+        console.log(imo)
     req.on('end', async ()=>{
         let rslt;
     switch(req.method){
-        case 'GET':
-        console.log("here")
-         rslt = await RestfulDataService['GET'](imo);
+        case 'GET':       
+        rslt = await RestfulDataService['GET'](imo);
         break;
         case defualt:
             res.end("defaulted")
     }
+    let code = rslt.ok ? 200 : 404;
+    res.writeHead(code, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify(rslt.data) + '\n');
 })
 }}
 const server = http.createServer(requestListener);
@@ -34,6 +36,7 @@ server.listen(8000, function(){
     console.log("listening on 8000");
 });
 }
+
 httpServer()
 
 module.exports = {

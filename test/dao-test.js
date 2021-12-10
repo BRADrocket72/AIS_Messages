@@ -4,7 +4,8 @@ dao.isStub = true
 
 describe('Find returns one object',async function(){
     it('', async function() {
-        console.log(await dao.find("1000007"))
-			assert.lengthOf([await dao.find()],1)
-		})
+        result = await (dao.find("1000007"))
+        
+        assert(result, {IMO : 1000007})
+    })
 });
