@@ -8,8 +8,17 @@ const denmarkTraffic = require('./data-access-object.js');
         })
         return res;
     }
+
+    async function post( data){
+        let res = await denmarkTraffic.insert(JSON.parse(data)).catch(err =>{
+            return {'ok': 0, data: {Error:err.toString()}};
+        })
+        return res;
+    }
+
+    
     return { GET: get };
-}
+    }
 module.exports = {
     RestfulDataService
 }

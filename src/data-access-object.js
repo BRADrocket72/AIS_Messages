@@ -81,8 +81,8 @@ async function findMatchName(Name){
     var client = new MongoClient(url, {useNewUrlParser: true});
     try {
         await client.connect()
-        const vessels = client.db(dbName).collection('vessels');
-        var docs = await vessels.find({Name: "$Name"}, {projection: {_id:0, IMO:1, Name:1, Built:1}}).toArray();
+        const ports = client.db(dbName).collection('ports');
+        var docs = await ports.find({Name: "$Name"}, {projection: {_id:0, IMO:1, Name:1, Built:1}}).toArray();
         return docs
        // console.log(docs);
     } catch (error) {
@@ -90,7 +90,41 @@ async function findMatchName(Name){
     }finally{
         client.close()
     }
+}
 
+async function findAllRecentPositions(){
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try{
+        //connect with database
+        await client.connect();
+        const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
+        var docs = await aisdk_20201118.aggregate([{$project: {_id:0,Position:1}}]).toArray();
+        return docs;
+        
+    }catch (error){
+        return error
+    }finally{
+        client.close()
+    }
+
+async function findShipsPositionFindByMMSI(mmsi){
+        var client = new MongoClient(url, {useNewUrlParser: true});
+        try{
+            //connect with database
+            await client.connect();
+            const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
+            var docs = await aisdk_20201118.aggregate([
+                {$match: {MMSI:mmsi}},
+                {$project: {_id:0,Position:1}}]).toArray();
+
+            return docs;
+            
+        }catch (error){
+            return error
+        }finally{
+            client.close()
+        }
+    }
 }
 
 module.exports = {
