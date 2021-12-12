@@ -8,7 +8,7 @@ async function find(imo) {
     //param: imo in string format
     //output: full vessel document as an obj
     if (this.isStub) {
-        return { IMO: 1000007 }
+        return [{ IMO: 1000007 }]
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
@@ -24,6 +24,20 @@ async function find(imo) {
         client.close()
     }
 
+}
+
+async function insertAISMessagesBatch(messages){
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try{
+        await client.connect();
+        const db = client.db(dbName);
+        const col = db.collection("aisdk_20201118");
+        col.insertMany(messages)
+    }catch(error){
+        return error;
+    }finally{
+        client.close()
+    }
 }
 
 async function findAllRecentPositions() {
@@ -100,12 +114,12 @@ async function deleteOldMessages() {
 }
 
 
-async function findPortByName(Name) {
+async function findPortByName(name) {
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
         const ports = client.db(dbName).collection('ports');
-        var docs = await ports.find({ Name: "$Name" }, { projection: { _id: 0, IMO: 1, Name: 1, Built: 1 } }).toArray();
+        var docs = await ports.find({ Name: name }, { projection: { _id: 0, IMO: 1, Name: 1, Built: 1 } }).toArray();
         return docs
     } catch (error) {
         return error
@@ -116,7 +130,7 @@ async function findPortByName(Name) {
 
 
 
-module.exports = { find, deleteOldMessages, findAllRecentPositions, findPortByName, findShipPositionFindByMMSI: findShipPositionByMMSI, isStub }
+module.exports = { find, deleteOldMessages, findAllRecentPositions, findPortByName, findShipPositionByMMSI, isStub, insertAISMessagesBatch }
 
 
 

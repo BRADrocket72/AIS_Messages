@@ -37,13 +37,11 @@ const denmarkTraffic = require('./data-access-object.js');
         async  function get(mmsi){
             let res;
             if(mmsi === "all"){
-                console.log("in all")
                  res = await denmarkTraffic.findAllRecentPositions().catch(err =>{
                     return {'ok': 0, data: {Error:err.toString()}};
                 })
                 return res;
             }
-            console.log("in specific");
             res = await denmarkTraffic.findShipPositionFindByMMSI(mmsi).catch(err =>{
                 return {'ok': 0, data: {Error:err.toString()}};
                 
@@ -51,14 +49,14 @@ const denmarkTraffic = require('./data-access-object.js');
             return res;
         }
     
-        async function post( data){
-            let res = await denmarkTraffic.insert(JSON.parse(data)).catch(err =>{
+        async function post( messages){
+            let res = await denmarkTraffic.insertAISMessagesBatch(JSON.parse(messages)).catch(err =>{
                 return {'ok': 0, data: {Error:err.toString()}};
             })
             return res;
         }
-        async function remove( imo, filter){
-            let res = await denmarkTraffic.remove(imo, filter).catch(err =>{
+        async function remove(){
+            let res = await denmarkTraffic.deleteOldMessages().catch(err =>{
                 return {'ok': 0, data: {Error:err.toString()}};
             })
             return res;

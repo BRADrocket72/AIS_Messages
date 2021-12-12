@@ -35,12 +35,19 @@ function httpServer() {
 
             let idFound = /[^/]+$/.exec(url.pathname);
             let mmsi = idFound != null ? String(idFound) : "all";
+            let messages = /[^/]+$/.exec(url.pathname);
             
             req.on('end', async () => {
                 let rslt;
                 switch (req.method) {
                     case 'GET':
                         rslt = await AISMessagesService['GET'](mmsi);
+                        break;
+                    case 'DELETE':
+                        rslt = await AISMessagesService['DELETE']();
+                        break;
+                    case 'POST':
+                        rslt = await AISMessagesService['POST'](messages);
                         break;
                     case defualt:
                         res.end("defaulted")
@@ -50,6 +57,8 @@ function httpServer() {
                 res.end(JSON.stringify(rslt) + '\n');
             });
         }
+
+        
     }
         const server = http.createServer(requestListener);
         server.listen(8000, function () {
