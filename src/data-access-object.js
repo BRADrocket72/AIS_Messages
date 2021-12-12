@@ -29,6 +29,9 @@ async function find(imo) {
 async function findAllRecentPositions() {
     //param: none
     //output: array of objs in form {mmsi, Latitude, Longitude}
+    if(this.isStub){
+        return [{"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}]
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect();
@@ -48,6 +51,9 @@ async function findAllRecentPositions() {
 async function findShipPositionByMMSI(mmsi) {
     //param: mmsi in string form
     //output full document 
+    if(this.isStub){
+        return {"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         //connect with database
@@ -101,11 +107,24 @@ async function deleteOldMessages() {
 
 
 async function findPortByName(Name) {
+    if(this.isStub){
+        return {
+            "id" : "2976",
+            "un/locode" : "DKHBO",
+            "port_location" : "Hobro",
+            "country" : "Denmark",
+            "longitude" : "9.809167",
+            "latitude" : "56.639722",
+            "website" : "\\N",
+            "mapview_1" : 1,
+            "mapview_2" : null,
+            "mapview_3" : null}
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
         const ports = client.db(dbName).collection('ports');
-        var docs = await ports.find({ Name: "$Name" }, { projection: { _id: 0, IMO: 1, Name: 1, Built: 1 } }).toArray();
+        var docs = await ports.find({port_location:"Hobro"}).toArray;
         return docs
     } catch (error) {
         return error
