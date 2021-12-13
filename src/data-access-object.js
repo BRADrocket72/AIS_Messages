@@ -10,17 +10,18 @@ async function find(mmsi) {
     if (this.isStub) {
         return [{ IMO: 1000007 }]
     }
-    if(typeof imo !== String){
+    if(typeof imo === null){
         throw error;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
-        await client.connect();
-        const db = client.db(dbName);
-        const vessels = db.collection("vessels");
-        var doc = await vessels.findOne({ MMSI: mmsi });
+        await client.connect()
+        const vessels = client.db(dbName).collection('vessels');
+        var doc = await vessels.findOne({ IMO: imo });
+        console.log(doc)
         return doc;
     } catch (error) {
+        console.log("in error")
         return error
     } finally {
         client.close()
@@ -29,18 +30,39 @@ async function find(mmsi) {
 }
 
 async function insertAISMessagesBatch(messages){
-    if (this.isStub){
-        return true
+    if(typeof messages !== Array){
+        throw error;
+    }
+    if(typeof messages === null){
+        throw error;
     }
     var client = new MongoClient(url, {useNewUrlParser: true});
     try{
         await client.connect();
         const db = client.db(dbName);
         const col = db.collection("aisdk_20201118");
-        col.insertMany(messages)
-        return true;
+        var result = await col.insertMany(messages)
+        return result.insertedIds.length;
     }catch(error){
         return error;
+    }finally{
+        client.close()
+    }
+}
+
+async function insertAISMessage(message){
+    if(typeof messages !== Object){
+        throw error;
+    }
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try{
+        await client.connect();
+        const db = client.db(dbName);
+        const col = db.collection("aisdk_20201118");
+        var result = await col.insertMany(message)
+        return 1;
+    }catch(error){
+        return 0;
     }finally{
         client.close()
     }
@@ -74,6 +96,9 @@ async function findShipPositionByMMSI(mmsi) {
     if(this.isStub){
         return {"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}
     }
+    if(typeof mmsi === null){
+        throw error;
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         //connect with database
@@ -86,6 +111,7 @@ async function findShipPositionByMMSI(mmsi) {
             { $project: { _id: 0,MMSI:1, Latitude: { $arrayElemAt: ['$Position.coordinates', 0] }, Longitude: { $arrayElemAt: ['$Position.coordinates', 1] } } },
             {$limit:1}]).toArray();
             return docs;
+
     } catch (error) {
         return error
     } finally {
@@ -98,18 +124,18 @@ async function deleteOldMessages() {
     //params none
     //calculates current time and deletes all messages older than 10 min
     //returns count of documents deleted
-    if (typeof imo === typeof string) {
+    if (typeof imo === string) {
         return error;
     }
     if (this.isStub) {
-        return true
+        return [{}]
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
         const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
         var tenMinutesOld = new Date(Date.now() - 1000 * 60 * 10);
-        var docs = await aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
+        var docs = aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
             if (err) throw error;
             console.log('A refresh error occurred');
             console.log(obj.result.n + "documents deleted")
@@ -138,6 +164,9 @@ async function findPortByName(Name) {
             "mapview_1" : 1,
             "mapview_2" : null,
             "mapview_3" : null}
+    }
+    if(typeof Name === null){
+        throw error;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
