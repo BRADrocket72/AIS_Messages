@@ -26,6 +26,9 @@ async function find(imo) {
 }
 
 async function insertAISMessagesBatch(messages){
+    if (this.isStub){
+        return true
+    }
     var client = new MongoClient(url, {useNewUrlParser: true});
     try{
         await client.connect();
@@ -92,11 +95,11 @@ async function deleteOldMessages() {
     //params none
     //calculates current time and deletes all messages older than 10 min
     //returns count of documents deleted
-    if (typeof imo === string) {
+    if (typeof imo === typeof string) {
         return error;
     }
     if (this.isStub) {
-        return [{}]
+        return true
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
