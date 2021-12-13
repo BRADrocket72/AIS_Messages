@@ -12,13 +12,12 @@ async function find(imo) {
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
-        await client.connect()
-        const vessels = client.db(dbName).collection('vessels');
-        var doc = await vessels.findOne({ IMO: imo });
-        console.log(doc)
+        await client.connect();
+        const db = client.db(dbName);
+        const vessels = db.collection("vessels");
+        var doc = await vessels.findOne({ IMO: 1000007 });
         return doc;
     } catch (error) {
-        console.log("in error")
         return error
     } finally {
         client.close()
@@ -33,6 +32,7 @@ async function insertAISMessagesBatch(messages){
         const db = client.db(dbName);
         const col = db.collection("aisdk_20201118");
         col.insertMany(messages)
+        return true;
     }catch(error){
         return error;
     }finally{
@@ -80,7 +80,6 @@ async function findShipPositionByMMSI(mmsi) {
             { $project: { _id: 0,MMSI:1, Latitude: { $arrayElemAt: ['$Position.coordinates', 0] }, Longitude: { $arrayElemAt: ['$Position.coordinates', 1] } } },
             {$limit:1}]).toArray();
             return docs;
-
     } catch (error) {
         return error
     } finally {
