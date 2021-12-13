@@ -12,12 +12,13 @@ async function find(imo) {
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
-        await client.connect();
-        const db = client.db(dbName);
-        const vessels = db.collection("vessels");
-        var doc = await vessels.findOne({ IMO: 1000007 });
+        await client.connect()
+        const vessels = client.db(dbName).collection('vessels');
+        var doc = await vessels.findOne({ IMO: imo });
+        console.log(doc)
         return doc;
     } catch (error) {
+        console.log("in error")
         return error
     } finally {
         client.close()
@@ -26,18 +27,36 @@ async function find(imo) {
 }
 
 async function insertAISMessagesBatch(messages){
-    if (this.isStub){
-        return true
+    if(typeof messages !== Array){
+        throw error;
     }
     var client = new MongoClient(url, {useNewUrlParser: true});
     try{
         await client.connect();
         const db = client.db(dbName);
         const col = db.collection("aisdk_20201118");
-        col.insertMany(messages)
-        return true;
+        var result = await col.insertMany(messages)
+        return result.insertedIds.length;
     }catch(error){
         return error;
+    }finally{
+        client.close()
+    }
+}
+
+async function insertAISMessage(message){
+    if(typeof messages !== Object){
+        throw error;
+    }
+    var client = new MongoClient(url, {useNewUrlParser: true});
+    try{
+        await client.connect();
+        const db = client.db(dbName);
+        const col = db.collection("aisdk_20201118");
+        var result = await col.insertMany(message)
+        return 1;
+    }catch(error){
+        return 0;
     }finally{
         client.close()
     }
@@ -83,6 +102,7 @@ async function findShipPositionByMMSI(mmsi) {
             { $project: { _id: 0,MMSI:1, Latitude: { $arrayElemAt: ['$Position.coordinates', 0] }, Longitude: { $arrayElemAt: ['$Position.coordinates', 1] } } },
             {$limit:1}]).toArray();
             return docs;
+
     } catch (error) {
         return error
     } finally {
@@ -95,11 +115,11 @@ async function deleteOldMessages() {
     //params none
     //calculates current time and deletes all messages older than 10 min
     //returns count of documents deleted
-    if (typeof imo === typeof string) {
+    if (typeof imo === string) {
         return error;
     }
     if (this.isStub) {
-        return true
+        return [{}]
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
