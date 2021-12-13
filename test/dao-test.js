@@ -10,10 +10,26 @@ describe('Find returns one object',async function(){
     })
 });
 
+describe ('Test find function input for non-null value',async function(){
+    it('', async function(){
+        assert.throws(() => {
+            await (dao.find(null))
+        })
+    })
+})
+
 describe('Inserts batch of AIS messages',async function(){
     it('', async function(){
         result = await (dao.insertAISMessagesBatch())
         assert(result, true)
+    })
+})
+
+describe ('Test insert batch batch of AIS messages input',async function(){
+    it('', async function(){
+        assert.throws(() => {
+            await (dao.find(null))
+        })
     })
 })
 
@@ -32,6 +48,14 @@ describe('Returns one MMSI, Latitude, and Longitude', async function(){
         assert(result, [{"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}])
     })
 });
+
+describe('Tests if MMSI value in findShipPositionByMMSI function is null',async function(){
+    it('', async function(){
+        assert.throws(() => {
+            await (dao.find(null))
+        })
+    })
+})
 
 describe('Deletes messages older than ten minutes', async function(){
     it('', async function(){
@@ -55,5 +79,13 @@ describe ('Returns all ports matching the given name', async function(){
             "mapview_1" : 1,
             "mapview_2" : null,
             "mapview_3" : null}])
+    })
+})
+
+describe ('Tests parameter for findPortByName function', async function(){
+    it('', async function(){
+        assert.throws(() => {
+            await(dao.find(null))
+        })
     })
 })

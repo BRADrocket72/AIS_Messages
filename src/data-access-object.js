@@ -10,6 +10,9 @@ async function find(imo) {
     if (this.isStub) {
         return [{ IMO: 1000007 }]
     }
+    if(typeof imo === null){
+        throw error;
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
@@ -28,6 +31,9 @@ async function find(imo) {
 
 async function insertAISMessagesBatch(messages){
     if(typeof messages !== Array){
+        throw error;
+    }
+    if(typeof messages === null){
         throw error;
     }
     var client = new MongoClient(url, {useNewUrlParser: true});
@@ -90,6 +96,9 @@ async function findShipPositionByMMSI(mmsi) {
     if(this.isStub){
         return {"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}
     }
+    if(typeof mmsi === null){
+        throw error;
+    }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         //connect with database
@@ -126,7 +135,7 @@ async function deleteOldMessages() {
         await client.connect()
         const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
         var tenMinutesOld = new Date(Date.now() - 1000 * 60 * 10);
-        var docs = await aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
+        var docs = aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
             if (err) throw error;
             console.log('A refresh error occurred');
             console.log(obj.result.n + "documents deleted")
@@ -155,6 +164,9 @@ async function findPortByName(Name) {
             "mapview_1" : 1,
             "mapview_2" : null,
             "mapview_3" : null}
+    }
+    if(typeof Name === null){
+        throw error;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
