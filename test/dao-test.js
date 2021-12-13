@@ -10,6 +10,13 @@ describe('Find returns one object',async function(){
     })
 });
 
+describe('Inserts batch of AIS messages',async function(){
+    it('', async function(){
+        result = await (dao.insertAISMessagesBatch())
+        assert(result, true)
+    })
+})
+
 describe('Returns MMSI, Latitude, and Longitude', async function(){
     it('', async function(){
         result = await (dao.findAllRecentPositions())
@@ -26,9 +33,12 @@ describe('Returns one MMSI, Latitude, and Longitude', async function(){
     })
 });
 
-//describe('Deletes messages older than ten minutes', async function(){
-
-//})
+describe('Deletes messages older than ten minutes', async function(){
+    it('', async function(){
+        result = await (dao.deleteOldMessages())
+        assert(result, true)
+    })
+})
 
 describe ('Returns all ports matching the given name', async function(){
     it('', async function(){
