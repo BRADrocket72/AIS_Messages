@@ -4,18 +4,21 @@ const dbName = 'AISTestData';
 
 var isStub = false;
 
-async function find(imo) {
+async function find(mmsi) {
     //param: imo in string format
     //output: full vessel document as an obj
     if (this.isStub) {
         return [{ IMO: 1000007 }]
+    }
+    if(typeof imo !== String){
+        throw error;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect();
         const db = client.db(dbName);
         const vessels = db.collection("vessels");
-        var doc = await vessels.findOne({ IMO: 1000007 });
+        var doc = await vessels.findOne({ MMSI: mmsi });
         return doc;
     } catch (error) {
         return error

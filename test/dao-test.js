@@ -9,6 +9,21 @@ describe('Find returns one object',async function(){
         assert(result, {IMO : 1000007})
     })
 });
+describe('Find returns one object',async function(){
+    it('', async function() {
+        result = describe('Find returns one object',async function(){
+            it('', async function() {
+                assert.throws(()=> {
+                    await (dao.find(null))
+                })
+            })
+        });
+        
+        
+        assert.throw()
+    })
+});
+
 
 describe('Inserts batch of AIS messages',async function(){
     it('', async function(){

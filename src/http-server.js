@@ -19,13 +19,13 @@ function httpServer() {
             //attempts to pull the imo from the url
             let idFound = /[^/]+$/.exec(url.pathname);
             //if imo is not found sets imo to "all" to retrieve all vessels
-            let imo = idFound != null ? Number(idFound) : null;
+            let mmsi = idFound != null ? Number(idFound) : null;
             req.on('end', async () => {
                 let rslt;
                 switch (req.method) {
                     case 'GET':
                         //gets vessel data if imo is "all", it retrieves all vessels
-                        rslt = await RestfulDataService['GET'](imo);
+                        rslt = await RestfulDataService['GET'](mmsi);
                         break;
                     case defualt:
                         res.end("defaulted")
@@ -38,7 +38,8 @@ function httpServer() {
         //Handles calls to the AISMessages collection
         if (url.pathname.startsWith('/denmarkTraffic/AISMessages')) {
             let body = '';
-            req.on('data', (chunk) => { body += chunk; })
+            req.on('data', (chunk) => { console.log(body)
+                body += chunk; })
 
             let idFound = /[^/]+$/.exec(url.pathname);
             //gets mmsi from uri string, if not found, it is set to "all"
@@ -55,7 +56,6 @@ function httpServer() {
                         rslt = await AISMessagesService['DELETE']();
                         break;
                     case 'POST':
-                        
                         rslt = await AISMessagesService['POST'](body);
                         break;
                     case defualt:
