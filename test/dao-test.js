@@ -20,7 +20,7 @@ describe('Returns MMSI, Latitude, and Longitude', async function(){
 
 describe('Returns one MMSI, Latitude, and Longitude', async function(){
     it('', async function(){
-        result = await (dao.findShipPositionFindByMMSI())
+        result = await (dao.findShipPositionByMMSI())
 
         assert(result, [{"MMSI":246430000,"Latitude":57.145633,"Longitude":8.316067}])
     })
