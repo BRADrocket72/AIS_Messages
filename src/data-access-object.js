@@ -135,13 +135,8 @@ async function deleteOldMessages() {
         await client.connect()
         const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
         var tenMinutesOld = new Date(Date.now() - 1000 * 60 * 10);
-        var docs = aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
-            if (err) throw error;
-            console.log('A refresh error occurred');
-            console.log(obj.result.n + "documents deleted")
-            return obj.result.n
-        });
-        return docs;
+        var docs = aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } });
+        return docs.deletedCount;
     } catch (error) {
         return error
     } finally {
