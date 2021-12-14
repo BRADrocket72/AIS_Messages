@@ -121,20 +121,17 @@ async function deleteOldMessages() {
     //calculates current time and deletes all messages older than 10 min
     //returns count of documents deleted
     if (this.isStub) {
-        return { "acknowledged" : true, "deletedCount" : 2000007 }
+        //return deleted count
+        return 100;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
         const aisdk_20201118 = client.db(dbName).collection('aisdk_20201118');
         var tenMinutesOld = new Date(Date.now() - 1000 * 60 * 10);
-        var docs = aisdk_20201118.deleteMany({ timestamp: { $lt: tenMinutesOld } }, function (err, result) {
-            if (err) throw error;
-            console.log('A refresh error occurred');
-            console.log(obj.result.n + "documents deleted")
-            return obj.result.n
-        });
-        return docs;
+        var docs =await aisdk_20201118.deleteMany( {$expr: { $lt: [ { $getField: {$literal: "$numberLong" } }, tenMinutesOld ] }});
+
+        return docs.deletedCount;
     } catch (error) {
         return error
     } finally {

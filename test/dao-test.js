@@ -66,7 +66,7 @@ describe('Tests if MMSI value in findShipPositionByMMSI function is null',async 
 describe('Deletes messages older than ten minutes', async function(){
     it('', async function(){
         result = await (dao.deleteOldMessages())
-        assert(result, { "acknowledged" : true, "deletedCount" : 2000007 })
+        assert(result, 100)
     })
 })
 
