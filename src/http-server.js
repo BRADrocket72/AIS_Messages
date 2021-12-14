@@ -16,15 +16,15 @@ function httpServer() {
         if (url.pathname.startsWith('/denmarkTraffic/vessels')) {
             let body = '';
             req.on('data', (chunk) => { body += chunk; })
-            //attempts to pull the imo from the url
+            //attempts to pull the mmsi from the url
             let idFound = /[^/]+$/.exec(url.pathname);
-            //if imo is not found sets imo to "all" to retrieve all vessels
+            //if imo is not found sets mmsi to "all" to retrieve all vessels
             let mmsi = idFound != null ? Number(idFound) : null;
             req.on('end', async () => {
                 let rslt;
                 switch (req.method) {
                     case 'GET':
-                        //gets vessel data if imo is "all", it retrieves all vessels
+                        //gets vessel data if mmsi is "all", it retrieves all vessels
                         rslt = await RestfulDataService['GET'](mmsi);
                         break;
                     case defualt:

@@ -10,18 +10,16 @@ async function find(mmsi) {
     if (this.isStub) {
         return [{ IMO: 1000007 }]
     }
-    if(typeof imo === null){
+    if(typeof mmsi === null){
         throw error;
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
         await client.connect()
-        const vessels = client.db(dbName).collection('vessels');
-        var doc = await vessels.findOne({ IMO: imo });
-        console.log(doc)
+        const vessels = client.db(dbName).collection("vessels");
+        var doc = await vessels.findOne({ MMSI: mmsi });
         return doc;
     } catch (error) {
-        console.log("in error")
         return error
     } finally {
         client.close()
@@ -30,11 +28,9 @@ async function find(mmsi) {
 }
 
 async function insertAISMessagesBatch(messages){
-    if(typeof messages !== Array){
-        throw error;
-    }
+    //input param, json formatted aismessages
     if(typeof messages === null){
-        throw error;
+        throw Error();
     }
     var client = new MongoClient(url, {useNewUrlParser: true});
     try{
@@ -60,7 +56,7 @@ async function insertAISMessage(message){
         const db = client.db(dbName);
         const col = db.collection("aisdk_20201118");
         var result = await col.insertMany(message)
-        return 1;
+        return result.acknowledged;
     }catch(error){
         return 0;
     }finally{
@@ -124,11 +120,8 @@ async function deleteOldMessages() {
     //params none
     //calculates current time and deletes all messages older than 10 min
     //returns count of documents deleted
-    if (typeof imo === string) {
-        return error;
-    }
     if (this.isStub) {
-        return [{}]
+        return { "acknowledged" : true, "deletedCount" : 2000007 }
     }
     var client = new MongoClient(url, { useNewUrlParser: true });
     try {
@@ -172,7 +165,7 @@ async function findPortByName(Name) {
     try {
         await client.connect()
         const ports = client.db(dbName).collection('ports');
-        var docs = await ports.find({port_location:"Hobro"}).toArray;
+        var docs = await ports.find({port_location:"Hobro"});
         return docs
     } catch (error) {
         return error
@@ -183,7 +176,7 @@ async function findPortByName(Name) {
 
 
 
-module.exports = { find, deleteOldMessages, findAllRecentPositions, findPortByName, findShipPositionByMMSI, isStub, insertAISMessagesBatch }
+module.exports = { find, deleteOldMessages, findAllRecentPositions, findPortByName, findShipPositionByMMSI, isStub, insertAISMessage, insertAISMessagesBatch }
 
 
 

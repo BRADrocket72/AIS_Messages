@@ -18,9 +18,6 @@ describe('Find returns one object',async function(){
                 })
             })
         });
-        
-        
-        assert.throw()
     })
 });
 
@@ -33,12 +30,6 @@ describe ('Test find function input for non-null value',async function(){
     })
 })
 
-describe('Inserts batch of AIS messages',async function(){
-    it('', async function(){
-        result = await (dao.insertAISMessagesBatch())
-        assert(result, true)
-    })
-})
 
 describe ('Test insert batch batch of AIS messages input',async function(){
     it('', async function(){
@@ -75,7 +66,7 @@ describe('Tests if MMSI value in findShipPositionByMMSI function is null',async 
 describe('Deletes messages older than ten minutes', async function(){
     it('', async function(){
         result = await (dao.deleteOldMessages())
-        assert(result, true)
+        assert(result, { "acknowledged" : true, "deletedCount" : 2000007 })
     })
 })
 

@@ -1,3 +1,3 @@
 # AIS_Messages
-
-Push acess test... JJ 
+We have created a Mongo Database With a Rest API interface
+ 
