@@ -1,7 +1,6 @@
 # AIS_Messages
 We have created a Mongo Database With a Rest API interface
-The queries have different levels of implementation in our program. In the Result_Images directory, We have screenshots each function either from our rest APi or from the Mongo interactive shell. We completed all of the bold priority operations, but did not get to all of teh priority 2 operations.
-
+The queries have different levels of implementation in our program. In the Result_Images directory, We have screenshots each function either from our rest APi or from the Mongo interactive shell. We completed all of the bold priority operations, but did not get to all of the priority 2 operations.
 
 We had used the standard mongo db for this project with no modifications to the data
 Use this command to create the database:
